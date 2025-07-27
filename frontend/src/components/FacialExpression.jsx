@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as faceapi from 'face-api.js';
 import './FacialExpression.css';
 import axios from 'axios';
+const api = import.meta.env.VITE_BACKEND_URL;
 
 export default function FacialExpression({setSongs}) {
     const videoRef = useRef();
@@ -81,7 +82,8 @@ export default function FacialExpression({setSongs}) {
             setDetectedMood(mood);
 
             // Fetch songs based on detected mood
-            const response = await axios.get(`http://localhost:3000/songs?mood=${mood}`);
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/songs?mood=${mood}`);
+
             console.log("Detected mood:", mood);
             console.log(response.data);
             setSongs(response.data.songs);
