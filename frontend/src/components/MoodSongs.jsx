@@ -24,30 +24,67 @@ const MoodSongs = ({ Songs }) => {
         }
     };
 
-    return (
-        <div className="mood-songs">
-            <h2>Recommended Songs</h2>
-            {Songs.map((song, index) => (
-                <div className="song" key={index}>
-                    <div className="title">
-                        <h3>{song.title}</h3>
-                        <p>{song.artist}</p>
-                    </div>
-                    <div className="play-pause-button">
-                        <audio
-                            ref={el => audioRefs.current[index] = el}
-                            src={song.audio}
-                        />
-                        <button onClick={() => handlePlayPause(index)}>
-                            {isPlaying === index ? (
-                                <i className="ri-pause-line"></i>
-                            ) : (
-                                <i className="ri-play-line"></i>
-                            )}
-                        </button>
-                    </div>
+    const formatDuration = (seconds) => {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    };
+
+    if (Songs.length === 0) {
+        return (
+            <div className="mood-songs-container glass">
+                <div className="empty-state">
+                    <div className="empty-icon">🎵</div>
+                    <h3>No songs yet</h3>
+                    <p>Detect your mood to get personalized music recommendations</p>
                 </div>
-            ))}
+            </div>
+        );
+    }
+
+    return (
+        <div className="mood-songs-container glass">
+            <div className="songs-header">
+                <h2>🎶 Your Mood Music</h2>
+                <p>Perfect songs for your current mood</p>
+            </div>
+            
+            <div className="songs-grid">
+                {Songs.map((song, index) => (
+                    <div className="song-card" key={index}>
+                        <div className="song-info">
+                            <div className="song-cover">
+                                <div className="cover-placeholder">
+                                    <span>🎵</span>
+                                </div>
+                            </div>
+                            <div className="song-details">
+                                <h3 className="song-title">{song.title}</h3>
+                                <p className="song-artist">{song.artist}</p>
+                            </div>
+                        </div>
+                        
+                        <div className="song-controls">
+                            <audio
+                                ref={el => audioRefs.current[index] = el}
+                                src={song.audio}
+                                onEnded={() => setIsPlaying(null)}
+                            />
+                            <button 
+                                className={`play-button ${isPlaying === index ? 'playing' : ''}`}
+                                onClick={() => handlePlayPause(index)}
+                                aria-label={isPlaying === index ? 'Pause' : 'Play'}
+                            >
+                                {isPlaying === index ? (
+                                    <span className="pause-icon">⏸️</span>
+                                ) : (
+                                    <span className="play-icon">▶️</span>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };

@@ -11,10 +11,28 @@ function App() {
   ]);
 
   return (
-    <>
-      <FacialEspression setSongs={setSongs}></FacialEspression>
-      <MoodSongs Songs={Songs}></MoodSongs>
-    </>
+    <div className="app-container">
+      {/* Header */}
+      <header className="app-header glass">
+        <div className="header-content">
+          <div className="logo">
+            <span className="logo-icon">🎵</span>
+            <h1>Moodify</h1>
+          </div>
+          <p className="tagline">Your mood, your music</p>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="main-content">
+        <FacialEspression setSongs={setSongs}></FacialEspression>
+        <MoodSongs Songs={Songs}></MoodSongs>
+      </main>
+
+      {/* Footer */}
+      <footer className="app-footer glass">
+      </footer>
+    </div>
   )
 }
 
